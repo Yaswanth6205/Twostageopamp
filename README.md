@@ -291,4 +291,4 @@ Minimum $V_{DS}$ for saturation includes 50-100 mV margin for velocity saturatio
 
 ---
 
-## 📁 7. Repository Structure
+
