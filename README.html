@@ -1,113 +1,56 @@
-# Twostageopamp
-Design and implementation of two stage operational amplifier with miller compensation and nulling resistor 
-<!DOCTYPE html>
-<html>
-<body>
+# 90nm CMOS Two-Stage Miller Compensated Op-Amp
 
-    <h1>90nm CMOS Two-Stage Miller Compensated Op-Amp</h1>
+[cite_start]This repository contains the design, mathematical modeling, and Cadence Virtuoso simulation results for a high-performance, low-voltage Two-Stage Operational Amplifier[cite: 63]. [cite_start]The project benchmarks a custom 90nm CMOS design against the industry-standard IC 741, demonstrating a 1000x improvement in power efficiency[cite: 67, 70].
 
-    <p>
-        This repository contains the design, mathematical modeling, and Cadence Virtuoso simulation results for a high-performance, low-voltage Two-Stage Operational Amplifier. The project benchmarks a custom 90nm CMOS design against the industry-standard IC 741, demonstrating a 1000x improvement in power efficiency[cite: 67, 70, 1013].
-    </p>
+---
 
-    <h2>Project Specifications</h2>
-    <ul>
-        <li><strong>Technology Node:</strong> 90nm CMOS (gpdk090) [cite: 63, 845]</li>
-        <li><strong>Supply Voltage:</strong> 1.2V [cite: 64, 203]</li>
-        <li><strong>DC Gain:</strong> 60 dB [cite: 69, 204, 978]</li>
-        <li><strong>Unity Gain Bandwidth (UGB):</strong> 23 MHz [cite: 69, 205, 981]</li>
-        <li><strong>Phase Margin:</strong> 74 degrees [cite: 69, 206, 982]</li>
-        <li><strong>Power Consumption:</strong> 108 micro-watts [cite: 70, 208, 929]</li>
-    </ul>
+## Project Specifications
+* [cite_start]**Technology Node:** 90nm CMOS (gpdk090) [cite: 63]
+* [cite_start]**Supply Voltage:** 1.2V [cite: 64]
+* [cite_start]**DC Gain:** 60 dB [cite: 69]
+* [cite_start]**Unity Gain Bandwidth (UGB):** 23 MHz [cite: 69]
+* [cite_start]**Phase Margin:** 74° [cite: 69]
+* [cite_start]**Power Consumption:** 108 µW [cite: 70]
 
-    <hr>
+---
 
-    <h2>Architecture and Design Methodology</h2>
+## Architecture and Design Methodology
 
-    <h3>1. Why a Two-Stage Architecture?</h3>
-    <p>
-        A single-stage amplifier cannot simultaneously achieve high gain and large output swing in 90nm technology due to reduced voltage headroom[cite: 157, 158]. This design separates these functions: 
-        <strong>Stage 1 (Differential Pair)</strong> provides high gain and common-mode rejection[cite: 169, 618], while 
-        <strong>Stage 2 (Common-Source)</strong> provides additional gain and a large output swing[cite: 170, 629].
-    </p>
+### 1. Why a Two-Stage Architecture?
+[cite_start]A single-stage amplifier cannot simultaneously achieve high gain and large output swing in 90nm technology due to reduced voltage headroom[cite: 158]. [cite_start]This design separates these functions: **Stage 1 (Differential Pair)** provides high gain and common-mode rejection, while **Stage 2 (Common-Source)** provides additional gain and a large output swing[cite: 159, 169, 170].
 
-    <h3>2. Miller Compensation and Pole Splitting</h3>
-    <p>
-        Two-stage amplifiers are inherently unstable because they introduce two significant poles[cite: 191, 229, 646]. Miller compensation uses a capacitor (Cc) between the input and output of the second stage to achieve <strong>Pole Splitting</strong>[cite: 275, 277]. This pushes the dominant pole (P1) to a lower frequency and the non-dominant pole (P2) to a higher frequency, ensuring stability[cite: 279, 659, 660].
-    </p>
+### 2. Miller Compensation and Pole Splitting
+[cite_start]Two-stage amplifiers are inherently unstable because they introduce two significant poles[cite: 229, 646]. [cite_start]Miller compensation uses a capacitor ($C_c$) between the input and output of the second stage to achieve **Pole Splitting**[cite: 275, 277]. [cite_start]This pushes the dominant pole ($P_1$) to a lower frequency and the non-dominant pole ($P_2$) to a higher frequency, ensuring stability[cite: 279, 659, 660].
 
-    <h3>3. The Nulling Resistor Solution</h3>
-    <p>
-        The Miller capacitor creates a feed-forward path that introduces a Right Half Plane (RHP) Zero[cite: 288, 290, 680]. This zero adds phase lag and degrades the phase margin[cite: 291, 689]. By placing a <strong>Nulling Resistor (Rz)</strong> in series with Cc and setting it approximately equal to 1/gm7, the zero is pushed to infinity or the left half plane to restore stability[cite: 292, 294, 698, 699].
-    </p>
+### 3. The Nulling Resistor Solution
+[cite_start]The Miller capacitor creates a feed-forward path that introduces a Right Half Plane (RHP) Zero[cite: 288, 680]. [cite_start]This zero adds phase lag and degrades the phase margin[cite: 291, 689]. [cite_start]By placing a **Nulling Resistor ($R_z$)** in series with $C_c$ and setting it approximately equal to $1/g_{m7}$, the zero is pushed to infinity to restore stability[cite: 292, 294, 698].
 
-    <hr>
+---
 
-    <h2>Implementation in Cadence Virtuoso</h2>
-    <p>
-        The circuit was implemented using the <strong>gm/Id methodology</strong> to determine transistor dimensions analytically[cite: 784, 1039]. 
-        All simulations were performed in the Cadence Virtuoso environment[cite: 63, 845]:
-    </p>
-    <ul>
-        <li><strong>DC Analysis:</strong> Verified that all transistors operate in the saturation region[cite: 837, 892, 923].</li>
-        <li><strong>AC Analysis:</strong> Extracted the Bode plot to measure gain, bandwidth, and phase margin[cite: 900, 904, 931].</li>
-        <li><strong>Transient Analysis:</strong> Measured the slew rate (8.05 V/micro-second) and settling behavior[cite: 905, 907, 989].</li>
-    </ul>
+## Implementation in Cadence Virtuoso
+[cite_start]The circuit was implemented using the **$g_m/I_d$ methodology** to determine transistor dimensions analytically[cite: 784, 788]. [cite_start]All simulations were performed in the Cadence Virtuoso environment[cite: 845]:
 
-    <hr>
+* **DC Analysis:** Verified that all transistors operate in the saturation region[cite: 891, 892].
+* [cite_start]**AC Analysis:** Extracted the Bode plot to measure gain, bandwidth, and phase margin[cite: 900, 904].
+* [cite_start]**Transient Analysis:** Measured the slew rate (8.05 V/µs) and settling behavior[cite: 905, 918, 989].
 
-    <h2>Comparative Performance Results</h2>
-    <table border="1">
-        <tr>
-            <th>Parameter</th>
-            <th>Custom 90nm Design</th>
-            <th>IC 741 (Traditional)</th>
-        </tr>
-        <tr>
-            <td>Technology</td>
-            <td>90nm CMOS [cite: 1031]</td>
-            <td>Bipolar Junction Transistor [cite: 1031]</td>
-        </tr>
-        <tr>
-            <td>Supply Voltage</td>
-            <td>1.2 V [cite: 1031]</td>
-            <td>+/- 15 V [cite: 1031]</td>
-        </tr>
-        <tr>
-            <td>Power Dissipation</td>
-            <td>108 micro-watts [cite: 1031]</td>
-            <td>~100 mW [cite: 1031]</td>
-        </tr>
-        <tr>
-            <td>Gain Bandwidth</td>
-            <td>23 MHz [cite: 1031]</td>
-            <td>1 MHz [cite: 1031]</td>
-        </tr>
-        <tr>
-            <td>Phase Margin</td>
-            <td>74 degrees [cite: 1031]</td>
-            <td>~90 degrees [cite: 1031]</td>
-        </tr>
-    </table>
+---
 
-    <hr>
+## Comparative Performance Results
 
-    <h2>Future Scope</h2>
-    <ul>
-        <li><strong>Fully Differential Implementation:</strong> Adding Common-Mode Feedback (CMFB) for better noise immunity[cite: 1050, 1052].</li>
-        <li><strong>PVT Analysis:</strong> Running corner simulations to ensure stability across Process, Voltage, and Temperature variations[cite: 1055, 1056].</li>
-        <li><strong>Layout:</strong> Designing the physical mask and performing Post-Layout Simulations (PLS) to account for parasitic effects[cite: 1063, 1069].</li>
-    </ul>
+| Parameter | Custom 90nm Design | IC 741 (Traditional) |
+| :--- | :--- | :--- |
+| **Technology** | [cite_start]90nm CMOS [cite: 1031] | [cite_start]Bipolar Junction Transistor [cite: 1031] |
+| **Supply Voltage** | [cite_start]1.2 V [cite: 1031] | [cite_start]±15 V [cite: 1031] |
+| **Power Dissipation** | [cite_start]108 µW [cite: 1031] | [cite_start]≈100 mW [cite: 1031] |
+| **Gain Bandwidth** | [cite_start]23 MHz [cite: 1031] | [cite_start]1 MHz [cite: 1031] |
+| **Phase Margin** | [cite_start]74° [cite: 1031] | [cite_start]≈90° [cite: 1031] |
+| **Slew Rate** | [cite_start]8.05 V/µs [cite: 1031] | [cite_start]0.5 V/µs [cite: 1031] |
 
-    <hr>
+---
 
-    <h2>Project Authors</h2>
-    <ul>
-        <li>Pennam Yaswanth (N200481) [cite: 10]</li>
-        <li>Gadamsetty Sukanya (N200424) [cite: 10]</li>
-        <li>Kornu Bharath Kumar (N200046) [cite: 10]</li>
-        <li><strong>Project Guide:</strong> Dr. Charles Stud [cite: 12]</li>
-    </ul>
-
-</body>
-</html>
+## Project Authors
+* Pennam Yaswanth (N200481) [cite: 10, 26]
+* [cite_start]Gadamsetty Sukanya (N200424) [cite: 10, 26]
+* [cite_start]Kornu Bharath Kumar (N200046) [cite: 10, 26]
+* **Project Guide:** Dr. Charles Stud [cite: 12, 28]
